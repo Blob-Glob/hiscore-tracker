@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HiscoreFunctionApp", "HiscoreFunctionApp\HiscoreFunctionApp.csproj", "{DFD469F5-7C03-46B8-A3F5-F89870836FFC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFD469F5-7C03-46B8-A3F5-F89870836FFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFD469F5-7C03-46B8-A3F5-F89870836FFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFD469F5-7C03-46B8-A3F5-F89870836FFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFD469F5-7C03-46B8-A3F5-F89870836FFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {230572D4-A8DD-4FB2-B3A9-0806F1E2CBAB}
+	EndGlobalSection
+EndGlobal
