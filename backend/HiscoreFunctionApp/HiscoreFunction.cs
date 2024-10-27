@@ -64,7 +64,6 @@ namespace HiscoreFunctionApp
 
             //TODO: Save the user and intial hiscore to the database
 
-
             return req.CreateResponse(HttpStatusCode.Created);
 
 
