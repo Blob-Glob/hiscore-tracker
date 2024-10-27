@@ -6,16 +6,19 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using HiscoreFunctionApp.Data;
+using HiscoreFunctionApp.Services;
 
 namespace HiscoreFunctionApp
 {
     public class HiscoreFunction
     {
         private readonly ILogger<HiscoreFunction> _logger;
+        private readonly IHiscoreApiService _hiscoreApiService;
 
-        public HiscoreFunction(ILogger<HiscoreFunction> logger)
+        public HiscoreFunction(ILogger<HiscoreFunction> logger, IHiscoreApiService hiscoreApiService, HttpClient httpClient)
         {
             _logger = logger;
+            _hiscoreApiService = hiscoreApiService;
         }
 
         [Function("RetriveHiscore")]
@@ -52,11 +55,14 @@ namespace HiscoreFunctionApp
 
             var user = JsonConvert.DeserializeObject<User>(requestBody);
 
+            if(user == null)
+            {
+                return req.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
             //TODO: Send a request to osrs api
 
-
-
-
+            var p = await _hiscoreApiService.GetHiscoreAsync(user.Name);
 
 
 
