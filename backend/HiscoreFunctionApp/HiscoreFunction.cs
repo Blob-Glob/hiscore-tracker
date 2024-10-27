@@ -33,7 +33,7 @@ namespace HiscoreFunctionApp
         {
             _logger.LogInformation("C# Timer trigger function executed at: {time}", DateTime.Now);
 
-
+       
 
         }
 
