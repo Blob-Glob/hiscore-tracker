@@ -41,120 +41,128 @@ namespace HiscoreFunctionApp.Services
 
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            MapToStats(responseBody);
-
-            return new Stats();
+            return MapToStats(responseBody); ;
         }
 
         public static Stats MapToStats(string data)
         {
-            var values = data.Split(',');
-
-            if (data.Length < 81) // Ensure there are enough values (27 skills * 3 fields = 81)
+            // Split data by line breaks to handle each skill separately
+            var lines = data.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+            if (lines.Length < 27)
             {
                 throw new ArgumentException("Insufficient data to map to Stats.");
             }
 
-            Stats stats = MapToStats(data);
-
+            // Parse and map the data to the Stats model
             return new Stats
             {
-                OverallRank = int.Parse(values[0]),
-                OverallLevel = int.Parse(values[1]),
-                OverallExp = int.Parse(values[2]),
+                OverallRank = ParseOrDefault(lines[0].Split(','), 0),
+                OverallLevel = ParseOrDefault(lines[0].Split(','), 1),
+                OverallExp = ParseOrDefault(lines[0].Split(','), 2),
 
-                AttackRank = int.Parse(values[3]),
-                AttackLevel = int.Parse(values[4]),
-                AttackExp = int.Parse(values[5]),
+                AttackRank = ParseOrDefault(lines[1].Split(','), 0),
+                AttackLevel = ParseOrDefault(lines[1].Split(','), 1),
+                AttackExp = ParseOrDefault(lines[1].Split(','), 2),
 
-                DefenceRank = int.Parse(values[6]),
-                DefenceLevel = int.Parse(values[7]),
-                DefenceExp = int.Parse(values[8]),
+                DefenceRank = ParseOrDefault(lines[2].Split(','), 0),
+                DefenceLevel = ParseOrDefault(lines[2].Split(','), 1),
+                DefenceExp = ParseOrDefault(lines[2].Split(','), 2),
 
-                StrengthRank = int.Parse(values[9]),
-                StrengthLevel = int.Parse(values[10]),
-                StrengthExp = int.Parse(values[11]),
+                StrengthRank = ParseOrDefault(lines[3].Split(','), 0),
+                StrengthLevel = ParseOrDefault(lines[3].Split(','), 1),
+                StrengthExp = ParseOrDefault(lines[3].Split(','), 2),
 
-                HitpointsRank = int.Parse(values[12]),
-                HitpointsLevel = int.Parse(values[13]),
-                HitpointsExp = int.Parse(values[14]),
+                HitpointsRank = ParseOrDefault(lines[4].Split(','), 0),
+                HitpointsLevel = ParseOrDefault(lines[4].Split(','), 1),
+                HitpointsExp = ParseOrDefault(lines[4].Split(','), 2),
 
-                RangedRank = int.Parse(values[15]),
-                RangedLevel = int.Parse(values[16]),
-                RangedExp = int.Parse(values[17]),
+                RangedRank = ParseOrDefault(lines[5].Split(','), 0),
+                RangedLevel = ParseOrDefault(lines[5].Split(','), 1),
+                RangedExp = ParseOrDefault(lines[5].Split(','), 2),
 
-                PrayerRank = int.Parse(values[18]),
-                PrayerLevel = int.Parse(values[19]),
-                PrayerExp = int.Parse(values[20]),
+                PrayerRank = ParseOrDefault(lines[6].Split(','), 0),
+                PrayerLevel = ParseOrDefault(lines[6].Split(','), 1),
+                PrayerExp = ParseOrDefault(lines[6].Split(','), 2),
 
-                MagicRank = int.Parse(values[21]),
-                MagicLevel = int.Parse(values[22]),
-                MagicExp = int.Parse(values[23]),
+                MagicRank = ParseOrDefault(lines[7].Split(','), 0),
+                MagicLevel = ParseOrDefault(lines[7].Split(','), 1),
+                MagicExp = ParseOrDefault(lines[7].Split(','), 2),
 
-                CookingRank = int.Parse(values[24]),
-                CookingLevel = int.Parse(values[25]),
-                CookingExp = int.Parse(values[26]),
+                CookingRank = ParseOrDefault(lines[8].Split(','), 0),
+                CookingLevel = ParseOrDefault(lines[8].Split(','), 1),
+                CookingExp = ParseOrDefault(lines[8].Split(','), 2),
 
-                WoodcuttingRank = int.Parse(values[27]),
-                WoodcuttingLevel = int.Parse(values[28]),
-                WoodcuttingExp = int.Parse(values[29]),
+                WoodcuttingRank = ParseOrDefault(lines[9].Split(','), 0),
+                WoodcuttingLevel = ParseOrDefault(lines[9].Split(','), 1),
+                WoodcuttingExp = ParseOrDefault(lines[9].Split(','), 2),
 
-                FletchingRank = int.Parse(values[30]),
-                FletchingLevel = int.Parse(values[31]),
-                FletchingExp = int.Parse(values[32]),
+                FletchingRank = ParseOrDefault(lines[10].Split(','), 0),
+                FletchingLevel = ParseOrDefault(lines[10].Split(','), 1),
+                FletchingExp = ParseOrDefault(lines[10].Split(','), 2),
 
-                FishingRank = int.Parse(values[33]),
-                FishingLevel = int.Parse(values[34]),
-                FishingExp = int.Parse(values[35]),
+                FishingRank = ParseOrDefault(lines[11].Split(','), 0),
+                FishingLevel = ParseOrDefault(lines[11].Split(','), 1),
+                FishingExp = ParseOrDefault(lines[11].Split(','), 2),
 
-                FiremakingRank = int.Parse(values[36]),
-                FiremakingLevel = int.Parse(values[37]),
-                FiremakingExp = int.Parse(values[38]),
+                FiremakingRank = ParseOrDefault(lines[12].Split(','), 0),
+                FiremakingLevel = ParseOrDefault(lines[12].Split(','), 1),
+                FiremakingExp = ParseOrDefault(lines[12].Split(','), 2),
 
-                CraftingRank = int.Parse(values[39]),
-                CraftingLevel = int.Parse(values[40]),
-                CraftingExp = int.Parse(values[41]),
+                CraftingRank = ParseOrDefault(lines[13].Split(','), 0),
+                CraftingLevel = ParseOrDefault(lines[13].Split(','), 1),
+                CraftingExp = ParseOrDefault(lines[13].Split(','), 2),
 
-                SmithingRank = int.Parse(values[42]),
-                SmithingLevel = int.Parse(values[43]),
-                SmithingExp = int.Parse(values[44]),
+                SmithingRank = ParseOrDefault(lines[14].Split(','), 0),
+                SmithingLevel = ParseOrDefault(lines[14].Split(','), 1),
+                SmithingExp = ParseOrDefault(lines[14].Split(','), 2),
 
-                MiningRank = int.Parse(values[45]),
-                MiningLevel = int.Parse(values[46]),
-                MiningExp = int.Parse(values[47]),
+                MiningRank = ParseOrDefault(lines[15].Split(','), 0),
+                MiningLevel = ParseOrDefault(lines[15].Split(','), 1),
+                MiningExp = ParseOrDefault(lines[15].Split(','), 2),
 
-                HerbloreRank = int.Parse(values[48]),
-                HerbloreLevel = int.Parse(values[49]),
-                HerbloreExp = int.Parse(values[50]),
+                HerbloreRank = ParseOrDefault(lines[16].Split(','), 0),
+                HerbloreLevel = ParseOrDefault(lines[16].Split(','), 1),
+                HerbloreExp = ParseOrDefault(lines[16].Split(','), 2),
 
-                AgilityRank = int.Parse(values[51]),
-                AgilityLevel = int.Parse(values[52]),
-                AgilityExp = int.Parse(values[53]),
+                AgilityRank = ParseOrDefault(lines[17].Split(','), 0),
+                AgilityLevel = ParseOrDefault(lines[17].Split(','), 1),
+                AgilityExp = ParseOrDefault(lines[17].Split(','), 2),
 
-                ThievingRank = int.Parse(values[54]),
-                ThievingLevel = int.Parse(values[55]),
-                ThievingExp = int.Parse(values[56]),
+                ThievingRank = ParseOrDefault(lines[18].Split(','), 0),
+                ThievingLevel = ParseOrDefault(lines[18].Split(','), 1),
+                ThievingExp = ParseOrDefault(lines[18].Split(','), 2),
 
-                SlayerRank = int.Parse(values[57]),
-                SlayerLevel = int.Parse(values[58]),
-                SlayerExp = int.Parse(values[59]),
+                SlayerRank = ParseOrDefault(lines[19].Split(','), 0),
+                SlayerLevel = ParseOrDefault(lines[19].Split(','), 1),
+                SlayerExp = ParseOrDefault(lines[19].Split(','), 2),
 
-                FarmingRank = int.Parse(values[60]),
-                FarmingLevel = int.Parse(values[61]),
-                FarmingExp = int.Parse(values[62]),
+                FarmingRank = ParseOrDefault(lines[20].Split(','), 0),
+                FarmingLevel = ParseOrDefault(lines[20].Split(','), 1),
+                FarmingExp = ParseOrDefault(lines[20].Split(','), 2),
 
-                RunecraftingRank = int.Parse(values[63]),
-                RunecraftingLevel = int.Parse(values[64]),
-                RunecraftingExp = int.Parse(values[65]),
+                RunecraftingRank = ParseOrDefault(lines[21].Split(','), 0),
+                RunecraftingLevel = ParseOrDefault(lines[21].Split(','), 1),
+                RunecraftingExp = ParseOrDefault(lines[21].Split(','), 2),
 
-                HunterRank = int.Parse(values[66]),
-                HunterLevel = int.Parse(values[67]),
-                HunterExp = int.Parse(values[68]),
+                HunterRank = ParseOrDefault(lines[22].Split(','), 0),
+                HunterLevel = ParseOrDefault(lines[22].Split(','), 1),
+                HunterExp = ParseOrDefault(lines[22].Split(','), 2),
 
-                ConstructionRank = int.Parse(values[69]),
-                ConstructionLevel = int.Parse(values[70]),
-                ConstructionExp = int.Parse(values[71])
+                ConstructionRank = ParseOrDefault(lines[23].Split(','), 0),
+                ConstructionLevel = ParseOrDefault(lines[23].Split(','), 1),
+                ConstructionExp = ParseOrDefault(lines[23].Split(','), 2)
             };
         }
+
+        // Helper function to parse values or return a default (e.g., -1) if parsing fails
+        private static int ParseOrDefault(string[] values, int index)
+        {
+            if (values.Length > index && int.TryParse(values[index], out int result))
+            {
+                return result;
+            }
+            return -1; // default value if parsing fails
+        }
+
     }
 }

@@ -15,7 +15,7 @@ namespace HiscoreFunctionApp
         private readonly ILogger<HiscoreFunction> _logger;
         private readonly IHiscoreApiService _hiscoreApiService;
 
-        public HiscoreFunction(ILogger<HiscoreFunction> logger, IHiscoreApiService hiscoreApiService, HttpClient httpClient)
+        public HiscoreFunction(ILogger<HiscoreFunction> logger, IHiscoreApiService hiscoreApiService)
         {
             _logger = logger;
             _hiscoreApiService = hiscoreApiService;
@@ -60,15 +60,9 @@ namespace HiscoreFunctionApp
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            //TODO: Send a request to osrs api
-
             var p = await _hiscoreApiService.GetHiscoreAsync(user.Name);
 
-
-
             //TODO: Save the user and intial hiscore to the database
-
-
 
 
             return req.CreateResponse(HttpStatusCode.Created);

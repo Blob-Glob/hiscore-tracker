@@ -1,25 +1,17 @@
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using HiscoreFunctionApp.Services;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace HiscoreFunctionApp
-{
-    public class Program
+var host = new HostBuilder()
+    .ConfigureFunctionsWorkerDefaults()
+    .ConfigureServices(services =>
     {
-        public static void Main(string[] args)
-        {
-            var host = new HostBuilder()
-                .ConfigureFunctionsWorkerDefaults()
-                .ConfigureServices((context, services) =>
-                {
-                    // Register HttpClient
-                    services.AddHttpClient();
-                    // Register your services
-                    services.AddSingleton<IHiscoreApiService, HiscoreApiService>();
-                })
-                .Build();
+        services.AddHttpClient();
+        services.AddSingleton<IHiscoreApiService, HiscoreApiService>();
 
-            host.Run();
-        }
-    }
-}
+
+    })
+    .Build();
+
+host.Run();
