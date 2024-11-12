@@ -1,5 +1,4 @@
-﻿using HiscoreFunctionApp.Data;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 
 using Newtonsoft.Json;
@@ -10,6 +9,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using HiscoreFunctionApp.Data.Models;
 
 namespace HiscoreFunctionApp.Services
 {

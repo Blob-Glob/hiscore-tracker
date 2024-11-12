@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HiscoreFunctionApp.Data
+namespace HiscoreFunctionApp.Data.Models
 {
-    public class User
+    public class Users
     {
-        public int Id { get; set; }
+        public int UserID { get; set; }
         public required string Name { get; set; }
     }
 }

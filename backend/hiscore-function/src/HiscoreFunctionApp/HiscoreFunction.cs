@@ -5,8 +5,8 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using HiscoreFunctionApp.Data;
 using HiscoreFunctionApp.Services;
+using HiscoreFunctionApp.Data.Models;
 
 namespace HiscoreFunctionApp
 {
@@ -53,7 +53,7 @@ namespace HiscoreFunctionApp
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            var user = JsonConvert.DeserializeObject<User>(requestBody);
+            var user = JsonConvert.DeserializeObject<Users>(requestBody);
 
             if(user == null)
             {

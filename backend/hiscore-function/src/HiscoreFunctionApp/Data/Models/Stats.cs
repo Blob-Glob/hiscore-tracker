@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HiscoreFunctionApp.Data
+namespace HiscoreFunctionApp.Data.Models
 {
     public class Stats
     {
+        public int StatID { get; set; }
+        public int UserID { get; set; }
         public int OverallRank { get; set; }
         public int OverallLevel { get; set; }
         public int OverallExp { get; set; }
