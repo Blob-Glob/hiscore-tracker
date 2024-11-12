@@ -22,7 +22,7 @@ namespace HiscoreFunctionApp
         }
 
         [Function("RetriveHiscore")]
-        public async Task<HttpResponseData> RunRetrieveHiscore([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+        public async Task<HttpResponseData> RunRetrieveHiscore([HttpTrigger(AuthorizationLevel.Function, "post")] HttpRequestData req)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
