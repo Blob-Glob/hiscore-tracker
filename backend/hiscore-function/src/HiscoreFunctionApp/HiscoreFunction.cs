@@ -60,6 +60,8 @@ namespace HiscoreFunctionApp
                 return req.CreateResponse(HttpStatusCode.BadRequest);
             }
 
+            //TODO check if user already exists
+
             var p = await _hiscoreApiService.GetHiscoreAsync(user.Name);
 
             //TODO: Save the user and intial hiscore to the database
