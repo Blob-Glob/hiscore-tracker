@@ -1,5 +1,4 @@
-﻿using HiscoreFunctionApp.Data;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 
 using Newtonsoft.Json;
@@ -9,34 +8,44 @@ using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using HiscoreFunctionApp.Data.Models;
 
 namespace HiscoreFunctionApp.Services
 {
     public interface IHiscoreApiService
     {
-        Task<Stats> GetHiscoreAsync(string username);
+        Task<Stats?> GetHiscoreAsync(string username);
     }
 
     public class HiscoreApiService : IHiscoreApiService
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
+        private readonly ILogger<HiscoreApiService> _logger;
 
-
-        public HiscoreApiService(HttpClient httpClient, IConfiguration config)
+        public HiscoreApiService(HttpClient httpClient, IConfiguration config, ILogger<HiscoreApiService> logger)
         {
             _httpClient = httpClient;
             _config = config;
+            _logger = logger;
         }
 
-        public async Task<Stats> GetHiscoreAsync(string username)
+        public async Task<Stats?> GetHiscoreAsync(string username)
         {
-
-            //string apiUrl = _config["HiScoreApiUrl"];
+            //Todo: Add config
             var response = await _httpClient.GetAsync($"https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player={username}");
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
-                throw new Exception("Failed to get hiscore");
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    _logger.LogError($"User not found: {username}");
+                    return null;
+                }
+
+                _logger.LogError($"Error: {response.StatusCode} {response.ReasonPhrase}");
+
+                return null;
             }
 
             string responseBody = await response.Content.ReadAsStringAsync();
