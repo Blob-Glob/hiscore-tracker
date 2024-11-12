@@ -73,5 +73,7 @@ CREATE TABLE Stats (
     ConstructionRank INT,
     ConstructionLevel INT,
     ConstructionExp INT,
+	CreatedAt DATETIME2 NOT NULL
+
     CONSTRAINT FK_User_Stats FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
