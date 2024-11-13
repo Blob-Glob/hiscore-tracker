@@ -105,6 +105,6 @@ namespace HiscoreFunctionApp.Data.Models
         public int ConstructionRank { get; set; }
         public int ConstructionLevel { get; set; }
         public int ConstructionExp { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
-
 }
