@@ -23,7 +23,6 @@ namespace HiscoreFunctionApp
             _logger = logger;
             _hiscoreApiService = hiscoreApiService;
             _hiscoreContext = hiscoreContext;
-
         }
 
         [Function("RetrieveHiscore")]
@@ -127,6 +126,47 @@ namespace HiscoreFunctionApp
 
             var response = req.CreateResponse(HttpStatusCode.OK);
             await response.WriteStringAsync("User added successfully.");
+            return response;
+        }
+
+        [Function("GetUserStats")]
+        public async Task<HttpResponseData> RunGetUserStats([HttpTrigger(AuthorizationLevel.Function, "get", "post")] HttpRequestData req)
+        {
+            _logger.LogInformation("C# HTTP trigger function processed a request.");
+
+            var requestBody = await req.ReadAsStringAsync();
+
+            if (requestBody == null)
+            {
+                return req.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            var user = JsonConvert.DeserializeObject<Users>(requestBody);
+
+            if (user == null)
+            {
+                return req.CreateResponse(HttpStatusCode.BadRequest);
+            }
+
+            var userInfo = await _hiscoreContext.Users.FirstOrDefaultAsync(u => u.Name == user.Name);
+
+            if (userInfo == null)
+            {
+                return req.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            var userStats = await _hiscoreContext.Stats
+                .Where(s => s.UserID == userInfo.UserID)
+                .OrderByDescending(s => s.CreatedAt)
+                .FirstOrDefaultAsync();
+
+            if (userStats == null)
+            {
+                return req.CreateResponse(HttpStatusCode.NotFound);
+            }
+
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            await response.WriteStringAsync(JsonConvert.SerializeObject(userStats));
             return response;
         }
     }

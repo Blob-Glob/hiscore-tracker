@@ -1,15 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using System.Net.Http;
-
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using HiscoreFunctionApp.Data.Models;
+using Polly;
+using Polly.Retry;
 
 namespace HiscoreFunctionApp.Services
 {
@@ -23,18 +16,26 @@ namespace HiscoreFunctionApp.Services
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _config;
         private readonly ILogger<HiscoreApiService> _logger;
+        private readonly AsyncRetryPolicy<HttpResponseMessage> _retryPolicy;
 
         public HiscoreApiService(HttpClient httpClient, IConfiguration config, ILogger<HiscoreApiService> logger)
         {
             _httpClient = httpClient;
             _config = config;
             _logger = logger;
+
+            _retryPolicy = Policy
+                .HandleResult<HttpResponseMessage>(r => !r.IsSuccessStatusCode)
+                .WaitAndRetryAsync(5, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    (response, timespan, retryCount, context) =>
+                    {
+                        _logger.LogWarning($"Request failed with {response.Result.StatusCode}. Waiting {timespan} before next retry. Retry attempt {retryCount}");
+                    });
         }
 
         public async Task<Stats?> GetHiscoreAsync(string username)
         {
-            //Todo: Add config
-            var response = await _httpClient.GetAsync($"https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player={username}");
+            var response = await _retryPolicy.ExecuteAsync(() => _httpClient.GetAsync($"https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player={username}"));
             if (response.StatusCode != System.Net.HttpStatusCode.OK)
             {
                 if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
@@ -50,7 +51,7 @@ namespace HiscoreFunctionApp.Services
 
             string responseBody = await response.Content.ReadAsStringAsync();
 
-            return MapToStats(responseBody); ;
+            return MapToStats(responseBody);
         }
 
         public static Stats MapToStats(string data)
@@ -172,6 +173,5 @@ namespace HiscoreFunctionApp.Services
             }
             return -1; // default value if parsing fails
         }
-
     }
 }
