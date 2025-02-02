@@ -15,7 +15,7 @@ OSRS HiScore Tracker is a web application that allows users to lookup and track 
 ## 🛠️ Tech Stack
 - **Frontend:** Blazor WebAssembly (.NET 9)
 - **Backend:** Azure Function App (.NET 8)
-- **Database:** PostgreSQL (managed with Flyway)
+- **Database:** MSSQL
 - **Database Migration:** Flyway
 - **Hosting:** Azure
 - **Authentication:** (Planned) Google Login Integration
